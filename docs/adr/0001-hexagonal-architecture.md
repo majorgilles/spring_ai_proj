@@ -64,12 +64,12 @@ We will implement a Hexagonal Architecture (Ports and Adapters) with the followi
 - Orchestrates domain objects to perform use cases
 - Components:
   - **"In" Ports (`UserUseCase.java`, `AiAssistantUseCase.java`)**: Use case interfaces consumed by UI/controllers
-  - **"Out" Ports (`UserPort.java`)**: Interfaces defining operations domain needs from infrastructure
   - **Application Services (`UserApplicationService.java`)**: Implements use cases, orchestrates domain operations
 - Rules:
   - Depends only on the domain layer
   - Contains no business logic, only orchestration
   - Translates between domain and external representations using DTOs
+  - Uses domain repository interfaces directly (no redundant "out" ports)
 
 #### 3. Infrastructure Layer (Adapters)
 - Implements interfaces defined by domain/application layers
@@ -112,7 +112,7 @@ We will implement a Hexagonal Architecture (Ports and Adapters) with the followi
 
 1. **User Request Flow**:
    ```
-   UserController → UserUseCase (interface) → UserApplicationService (impl) → User (domain) → UserPort (interface) → UserPersistenceAdapter (impl) → Database
+   UserController → UserUseCase (interface) → UserApplicationService (impl) → User (domain) → UserRepository (domain interface) → UserPersistenceAdapter (impl) → Database
    ```
 
 2. **AI Assistant Request Flow**:
@@ -130,9 +130,13 @@ We will implement a Hexagonal Architecture (Ports and Adapters) with the followi
 
 ## Consequences
 
-1. **More Code**: Additional interfaces and abstractions increase codebase size
-2. **Learning Curve**: Architecture may be unfamiliar to new team members
-3. **Complexity**: More moving parts compared to simpler architectures
+1. **Learning Curve**: Architecture may be unfamiliar to new team members
+2. **Thoughtful Interface Design**: Care must be taken to avoid redundant interfaces
+3. **Refactoring Considerations**: 
+   - We eliminated redundant "out" ports in the application layer
+   - Domain repository interfaces are used directly by application services
+   - This simplifies the design while maintaining clean architecture principles
+4. **Balance of Abstraction**: We aim for the minimal set of interfaces needed to achieve separation of concerns
 
 ## References
 
