@@ -1,7 +1,7 @@
 package com.example.aimobilebackend.interfaces.rest;
 
 import com.example.aimobilebackend.application.dto.UserDto;
-import com.example.aimobilebackend.application.port.in.UserUseCase;
+import com.example.aimobilebackend.application.service.UserApplicationService;
 import com.example.aimobilebackend.interfaces.rest.dto.UserRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
     
     @MockBean
-    private UserUseCase userUseCase;
+    private UserApplicationService userApplicationService;
     
     private UserDto testUserDto;
     private UUID testUuid;
@@ -57,7 +57,7 @@ class UserControllerTest {
         request.setUsername("testuser");
         request.setEmail("test@example.com");
         
-        when(userUseCase.createUser(anyString(), anyString())).thenReturn(testUserDto);
+        when(userApplicationService.createUser(anyString(), anyString())).thenReturn(testUserDto);
         
         // When & Then
         mockMvc.perform(post("/api/users")
@@ -72,7 +72,7 @@ class UserControllerTest {
     @Test
     void getUserById_shouldReturnUserWhenFound() throws Exception {
         // Given
-        when(userUseCase.getUserById(any(UUID.class))).thenReturn(Optional.of(testUserDto));
+        when(userApplicationService.getUserById(any(UUID.class))).thenReturn(Optional.of(testUserDto));
         
         // When & Then
         mockMvc.perform(get("/api/users/{id}", testUuid))
@@ -85,7 +85,7 @@ class UserControllerTest {
     @Test
     void getUserById_shouldReturn404WhenNotFound() throws Exception {
         // Given
-        when(userUseCase.getUserById(any(UUID.class))).thenReturn(Optional.empty());
+        when(userApplicationService.getUserById(any(UUID.class))).thenReturn(Optional.empty());
         
         // When & Then
         mockMvc.perform(get("/api/users/{id}", testUuid))
@@ -103,7 +103,7 @@ class UserControllerTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
         
-        when(userUseCase.getAllUsers()).thenReturn(Arrays.asList(testUserDto, testUserDto2));
+        when(userApplicationService.getAllUsers()).thenReturn(Arrays.asList(testUserDto, testUserDto2));
         
         // When & Then
         mockMvc.perform(get("/api/users"))
@@ -125,7 +125,7 @@ class UserControllerTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
         
-        when(userUseCase.updateUsername(any(UUID.class), anyString())).thenReturn(Optional.of(updatedUserDto));
+        when(userApplicationService.updateUsername(any(UUID.class), anyString())).thenReturn(Optional.of(updatedUserDto));
         
         // When & Then
         mockMvc.perform(put("/api/users/{id}/username", testUuid)

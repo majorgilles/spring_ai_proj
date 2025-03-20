@@ -1,7 +1,7 @@
 package com.example.aimobilebackend.interfaces.rest;
 
 import com.example.aimobilebackend.application.dto.UserDto;
-import com.example.aimobilebackend.application.port.in.UserUseCase;
+import com.example.aimobilebackend.application.service.UserApplicationService;
 import com.example.aimobilebackend.interfaces.rest.dto.UserRequest;
 import com.example.aimobilebackend.interfaces.rest.dto.UserResponse;
 import jakarta.validation.Valid;
@@ -19,24 +19,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserController {
     
-    private final UserUseCase userUseCase;
+    private final UserApplicationService userApplicationService;
     
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest request) {
-        UserDto userDto = userUseCase.createUser(request.getUsername(), request.getEmail());
+        UserDto userDto = userApplicationService.createUser(request.getUsername(), request.getEmail());
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToResponse(userDto));
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable UUID id) {
-        return userUseCase.getUserById(id)
+        return userApplicationService.getUserById(id)
                 .map(userDto -> ResponseEntity.ok(mapToResponse(userDto)))
                 .orElse(ResponseEntity.notFound().build());
     }
     
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<UserResponse> users = userUseCase.getAllUsers().stream()
+        List<UserResponse> users = userApplicationService.getAllUsers().stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(users);
@@ -46,7 +46,7 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUsername(@PathVariable UUID id, 
                                                        @RequestParam String username) {
         try {
-            return userUseCase.updateUsername(id, username)
+            return userApplicationService.updateUsername(id, username)
                     .map(userDto -> ResponseEntity.ok(mapToResponse(userDto)))
                     .orElse(ResponseEntity.notFound().build());
         } catch (Exception e) {
@@ -60,14 +60,14 @@ public class UserController {
     @PutMapping("/{id}/email")
     public ResponseEntity<UserResponse> updateEmail(@PathVariable UUID id, 
                                                     @RequestParam String email) {
-        return userUseCase.updateEmail(id, email)
+        return userApplicationService.updateEmail(id, email)
                 .map(userDto -> ResponseEntity.ok(mapToResponse(userDto)))
                 .orElse(ResponseEntity.notFound().build());
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
-        userUseCase.deleteUser(id);
+        userApplicationService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
     
