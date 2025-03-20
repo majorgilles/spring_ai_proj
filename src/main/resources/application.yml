@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: ai-mobile-backend
+    
+  # Database configuration
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      
+  # Spring AI configuration
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      
+# Server configuration
+server:
+  port: 8080
+  
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG

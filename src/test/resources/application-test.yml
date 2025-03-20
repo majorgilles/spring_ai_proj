@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  
+  # Mock AI provider for tests
+  ai:
+    openai:
+      api-key: test-api-key
+      mock:
+        enabled: true
+
+# Disable Spring Boot's auto-configuration of REST-assured
+spring.test.restdocs.enabled: false
+
+# Enable detailed logging for testing
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
+    org.springframework.web: DEBUG
