@@ -1,11 +1,11 @@
 package com.example.aimobilebackend.infrastructure.persistence.repository;
 
-import com.example.aimobilebackend.infrastructure.persistence.entity.UserEntity;
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
+import com.example.aimobilebackend.infrastructure.persistence.entity.UserEntity;
 
 @Repository
-public interface UserJpaRepository extends JpaRepository<UserEntity, UUID> {
-}
+public interface UserJpaRepository extends JpaRepository<UserEntity, UUID> {}

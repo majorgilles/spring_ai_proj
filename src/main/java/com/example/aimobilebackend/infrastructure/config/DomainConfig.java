@@ -4,5 +4,5 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DomainConfig {
-    // Domain configuration can be added here as needed
+  // Domain configuration can be added here as needed
 }

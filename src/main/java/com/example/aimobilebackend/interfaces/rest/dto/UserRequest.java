@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 public class UserRequest {
-    
-    @NotBlank(message = "Username is required")
-    private String username;
-    
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
-    private String email;
+
+  @NotBlank(message = "Username is required")
+  private String username;
+
+  @NotBlank(message = "Email is required")
+  @Email(message = "Email should be valid")
+  private String email;
 }

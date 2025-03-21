@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class AiRequest {
-    
-    @NotBlank(message = "Input text is required")
-    private String text;
+
+  @NotBlank(message = "Input text is required")
+  private String text;
 }

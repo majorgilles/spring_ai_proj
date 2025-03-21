@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class AiResponse {
-    private String content;
+  private String content;
 }
